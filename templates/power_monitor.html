@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Tuya Device Real-time Power Uses</title>
+    <!-- Include required Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<h1>Tuya Device Real-time Power Uses</h1>
+<!-- Add a button to go to the home page -->
+<button onclick="goToHome()">Go to Home</button>
+<!-- Placeholder for the line chart -->
+<canvas id="lineChart" style="width: 50%; height: 50%"></canvas>
+<!-- Include your SocketIO connection script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+<script>
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+    var myLineChart;
+
+    socket.on('logs', function (msg) {
+        updateChart(msg.logs);
+    });
+
+    function updateChart(logs) {
+        // Extract data for each line
+        var curCurrentData = logs.filter(function (log) {
+            return log.code === 'cur_current';
+        });
+
+        var curPowerData = logs.filter(function (log) {
+            return log.code === 'cur_power';
+        });
+
+        updateLineChart('lineChart', curCurrentData, 'Real-time Current', 'blue');
+        updateLineChart('lineChart', curPowerData, 'Real-time Power', 'red');
+    }
+
+    function updateLineChart(chartId, data, label, color) {
+        var flattenedLogs = data.flat();
+
+        var labels = flattenedLogs.map(function (log) {
+            return new Date(log.event_time).toLocaleTimeString();
+        });
+
+        var values = flattenedLogs.map(function (log) {
+            return parseFloat(log.value);
+        });
+
+        var ctx = document.getElementById(chartId).getContext('2d');
+
+        if (typeof myLineChart === 'undefined') {
+            myLineChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: label,
+                        data: values,
+                        borderColor: color,
+                        borderWidth: 1,
+                        fill: false
+                    }]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            type: 'time',
+                            time: {
+                                unit: 'second'
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    },
+                    tooltips: {
+                        callbacks: {
+                            title: function (tooltipItem, data) {
+                                return data.labels[tooltipItem[0].index];
+                            },
+                            label: function (tooltipItem, data) {
+                                return 'Value: ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                            }
+                        }
+                    }
+                }
+            });
+        } else {
+            // Check if the dataset already exists, if not, create a new one
+            var datasetIndex = myLineChart.data.datasets.findIndex(function (dataset) {
+                return dataset.label === label;
+            });
+
+            if (datasetIndex === -1) {
+                myLineChart.data.datasets.push({
+                    label: label,
+                    data: values,
+                    borderColor: color,
+                    borderWidth: 1,
+                    fill: false
+                });
+            } else {
+                // Update existing dataset with new data
+                myLineChart.data.datasets[datasetIndex].data = values;
+                myLineChart.data.labels = labels;
+            }
+
+            myLineChart.update();
+        }
+    }
+
+    // Function to navigate to the home page
+    function goToHome() {
+        window.location.href = '/';
+    }
+</script>
+</body>
+</html>
