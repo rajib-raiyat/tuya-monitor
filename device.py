@@ -1,3 +1,4 @@
+import json
 import os
 from datetime import datetime, timedelta
 
@@ -49,6 +50,13 @@ def get_real_time_update():
 
     device_logs = response['result']['logs']
 
+    if not len(device_logs):
+        print('....')
+        with open('temp/log-data.json', 'r') as f:
+            device_logs = json.loads(f.read())
+    else:
+        print('getting results...')
+
     # Filter logs for 'cur_current' and 'cur_power' events
     cur_current_logs = [log for log in device_logs if log['code'] == 'cur_current']
     cur_power_logs = [log for log in device_logs if log['code'] == 'cur_power']
@@ -56,5 +64,4 @@ def get_real_time_update():
     # Find the latest 'cur_current' and 'cur_power' values
     latest_cur_current = max(cur_current_logs, key=lambda x: x['event_time'])
     latest_cur_power = max(cur_power_logs, key=lambda x: x['event_time'])
-    print('getting results...')
     return latest_cur_current, latest_cur_power

@@ -1,7 +1,6 @@
 ### dotenv ###
 .env
 config
-data.json
 
 ### JetBrains+all ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
