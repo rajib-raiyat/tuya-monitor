@@ -1,0 +1,26 @@
+[
+  {
+    "code": "cur_current",
+    "event_from": "1",
+    "event_id": 7,
+    "event_time": 1700840606587,
+    "status": "1",
+    "value": "258"
+  },
+  {
+    "code": "cur_power",
+    "event_from": "1",
+    "event_id": 7,
+    "event_time": 1700840606587,
+    "status": "1",
+    "value": "295"
+  },
+  {
+    "code": "cur_voltage",
+    "event_from": "1",
+    "event_id": 7,
+    "event_time": 1700840606587,
+    "status": "1",
+    "value": "2237"
+  }
+]
