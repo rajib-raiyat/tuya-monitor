@@ -1,0 +1,4 @@
+tuya-connector-python
+Flask
+flask-socketio
+python-dotenv
