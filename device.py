@@ -64,3 +64,17 @@ def get_real_time_update():
     latest_cur_current = max(cur_current_logs, key=lambda x: x['event_time'])
     latest_cur_power = max(cur_power_logs, key=lambda x: x['event_time'])
     return latest_cur_current, latest_cur_power
+
+
+def get_device_info():
+    response = openapi.get(f"/v1.0/devices/{DEVICE_ID}", params={"schema": True})
+
+    if not response['success'] or not response['result']:
+        print('....')
+        with open('temp/device-info.json', 'r') as f:
+            response = json.loads(f.read())
+
+        return response['result']
+
+    print('getting results...')
+    return response['result']

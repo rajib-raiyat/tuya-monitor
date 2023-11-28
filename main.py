@@ -1,15 +1,15 @@
 import asyncio
 import threading
+from datetime import datetime
 from threading import Event
 
 from flask import Flask, render_template, redirect, url_for
 from flask_socketio import SocketIO
 
-from device import get_updates, get_real_time_update
+from device import get_updates, get_real_time_update, get_device_info
 
 app = Flask(__name__, static_url_path='/static')
 socketio = SocketIO(app)
-
 
 # Event object to signal the background task to stop
 stop_event = Event()
@@ -20,9 +20,19 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/device-info')
+def device_info():
+    info = get_device_info()
+
+    return render_template(
+        'device_info.html',
+        device_info=info,
+        human_readable_time=human_readable_time
+    )
+
+
 @app.route('/power-monitor')
 def power_monitor():
-    # Check if the background task has been started, if not, start it
     if not background_task_started():
         start_background_task()
     return render_template('power_monitor.html')
@@ -32,6 +42,10 @@ def power_monitor():
 def go_to_power_monitor():
     # Redirect to the power monitor page
     return redirect(url_for('power_monitor'))
+
+
+def human_readable_time(timestamp):
+    return datetime.fromtimestamp(timestamp).strftime('%d %b, %Y - %I:%M %p %A')
 
 
 @socketio.on('connect')

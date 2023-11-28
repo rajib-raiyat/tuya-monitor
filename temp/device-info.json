@@ -1,0 +1,82 @@
+{
+  "result": {
+    "active_time": 1701096486,
+    "biz_type": 18,
+    "category": "cz",
+    "create_time": 1699280174,
+    "icon": "smart/icon/non-session-user/1655258627f3c9dadb5e2.png",
+    "id": "bfbf4fb6bbbca471b32g7r",
+    "ip": "103.72.212.143",
+    "lat": "23.7634",
+    "local_key": "p&r)5gxm<oXs~oSE",
+    "lon": "90.4392",
+    "model": "BP20V4",
+    "name": "Smart plug",
+    "online": true,
+    "owner_id": "171322685",
+    "product_id": "o7ve1lp3gfjvsvyo",
+    "product_name": "Smart plug",
+    "status": [
+      {
+        "code": "switch_1",
+        "value": true
+      },
+      {
+        "code": "countdown_1",
+        "value": 0
+      },
+      {
+        "code": "add_ele",
+        "value": 9
+      },
+      {
+        "code": "cur_current",
+        "value": 138
+      },
+      {
+        "code": "cur_power",
+        "value": 149
+      },
+      {
+        "code": "cur_voltage",
+        "value": 2204
+      },
+      {
+        "code": "relay_status",
+        "value": "last"
+      },
+      {
+        "code": "overcharge_switch",
+        "value": true
+      },
+      {
+        "code": "light_mode",
+        "value": "none"
+      },
+      {
+        "code": "child_lock",
+        "value": false
+      },
+      {
+        "code": "cycle_time",
+        "value": ""
+      },
+      {
+        "code": "random_time",
+        "value": "4/A/////"
+      },
+      {
+        "code": "switch_inching",
+        "value": ""
+      }
+    ],
+    "sub": false,
+    "time_zone": "+06:00",
+    "uid": "eu1699279714684tpASK",
+    "update_time": 1701164500,
+    "uuid": "bf7afffe6580038a"
+  },
+  "success": true,
+  "t": 1701189475714,
+  "tid": "7b6ee0da8e0c11ee86abc62998796177"
+}

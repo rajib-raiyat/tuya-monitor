@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Device Information</title>
+</head>
+<body>
+<h1>Device Information</h1>
+
+<ul>
+    <img alt="Device Icon" height="150" src="https://images.tuyacn.com/{{ device_info['icon'] }}" width="150">
+
+    <li><strong>Product Name:</strong> {{ device_info['product_name'] }}</li>
+    <li><strong>Product Model:</strong> {{ device_info['model'] }}</li>
+    <li><strong>Is Sub-device:</strong> {{ "Yes" if device_info['sub'] else "No" }}</li>
+    <li><strong>Online:</strong> {{ "Yes" if device_info['online'] else "No" }}</li>
+    <li><strong>Active Time:</strong> {{ human_readable_time(device_info['active_time']) }}</li>
+    <li><strong>Update Time:</strong> {{ human_readable_time(device_info['update_time']) }}</li>
+    <li><strong>Create Time:</strong> {{ human_readable_time(device_info['create_time']) }}</li>
+    <li><strong>IP Address:</strong> {{ device_info['ip'] }}</li>
+</ul>
+
+<iframe
+        height="300"
+        src="https://maps.google.com/maps?q={{ device_info['lat'] }},{{ device_info['lon'] }}&hl=us&z=14&amp;output=embed"
+        width="300">
+</iframe>
+
+</body>
+</html>
