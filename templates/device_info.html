@@ -1,16 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Device Information</title>
+    <title>Tuya Monitor</title>
 </head>
+
 <body>
 <h1>Device Information</h1>
+<button onclick="goToHome()">Go to Home</button>
+
+<!-- Buttons to send true or false -->
+<button onclick="sendStatus(true)">Send True</button>
+<button onclick="sendStatus(false)">Send False</button>
+
+<!-- Message element -->
+<p id="status-message"></p>
 
 <ul>
     <img alt="Device Icon" height="150" src="https://images.tuyacn.com/{{ device_info['icon'] }}" width="150">
-
     <li><strong>Product Name:</strong> {{ device_info['product_name'] }}</li>
     <li><strong>Product Model:</strong> {{ device_info['model'] }}</li>
     <li><strong>Is Sub-device:</strong> {{ "Yes" if device_info['sub'] else "No" }}</li>
@@ -21,11 +30,51 @@
     <li><strong>IP Address:</strong> {{ device_info['ip'] }}</li>
 </ul>
 
-<iframe
-        height="300"
+<iframe height="300"
         src="https://maps.google.com/maps?q={{ device_info['lat'] }},{{ device_info['lon'] }}&hl=us&z=14&amp;output=embed"
         width="300">
 </iframe>
 
+<script>
+    function sendStatus(value) {
+        const backendURL = '/device-control';
+        const statusMessage = document.getElementById('status-message');
+
+        // Display a loading message while waiting for the response
+        statusMessage.innerText = 'Loading...';
+
+        fetch(backendURL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({status: value}),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Response from backend:', data);
+
+                // Check if both "success" and "result" are true
+                if (data.success && data.result) {
+                    statusMessage.innerText = 'Success!';
+                } else {
+                    statusMessage.innerText = 'Error: Unexpected response from the backend.';
+                }
+            })
+            .catch(error => {
+                console.error('Error sending status to backend:', error);
+
+                // Display an error message
+                statusMessage.innerText = 'Error: Unable to communicate with the backend.';
+            });
+    }
+
+    // Function to navigate to the home page
+    function goToHome() {
+        window.location.href = '/';
+    }
+</script>
+
 </body>
+
 </html>

@@ -78,3 +78,19 @@ def get_device_info():
 
     print('getting results...')
     return response['result']
+
+
+def set_device_control(value):
+    response = openapi.post(
+        f"/v1.0/devices/{DEVICE_ID}/commands",
+        body={
+            "commands": [
+                {
+                    "code": "switch_1",
+                    "value": value
+                }
+            ]
+        }
+    )
+
+    return response

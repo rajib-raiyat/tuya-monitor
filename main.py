@@ -3,10 +3,10 @@ import threading
 from datetime import datetime
 from threading import Event
 
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request, jsonify
 from flask_socketio import SocketIO
 
-from device import get_updates, get_real_time_update, get_device_info
+from device import get_updates, get_real_time_update, get_device_info, set_device_control
 
 app = Flask(__name__, static_url_path='/static')
 socketio = SocketIO(app)
@@ -29,6 +29,14 @@ def device_info():
         device_info=info,
         human_readable_time=human_readable_time
     )
+
+
+@app.route('/device-control', methods=['POST'])
+def device_control():
+    json_body = request.get_json()
+
+    response = set_device_control(json_body['status'])
+    return jsonify(response)
 
 
 @app.route('/power-monitor')
