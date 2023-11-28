@@ -7,8 +7,9 @@ from flask_socketio import SocketIO
 
 from device import get_updates, get_real_time_update
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 socketio = SocketIO(app)
+
 
 # Event object to signal the background task to stop
 stop_event = Event()
