@@ -1,43 +1,49 @@
 body {
-    background-color: #fbfbfb;
+    display: flex;
+    height: 100vh;
+    margin: 0;
+    /* background: black; */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* Replace 'your-background-image.jpg' with your actual image file */
+    background-size: cover;
 }
 
-@media (min-width: 991.98px) {
-    main {
-        padding-left: 240px;
-    }
-}
-
-/* Sidebar */
-.sidebar {
+#sidebar {
+    width: 200px;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: 100%;
     position: fixed;
-    top: 0;
+    left: -200px;
+    top: 60px;
     bottom: 0;
-    left: 0;
-    padding: 58px 0 0;
-    /* Height of navbar */
-    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
-    width: 240px;
-    z-index: 600;
+    transition: left 0.3s ease;
 }
 
-@media (max-width: 991.98px) {
-    .sidebar {
-        width: 100%;
-    }
+#content {
+    flex: 1;
+    padding: 20px;
+    color: #fff;
 }
 
-.sidebar .active {
-    border-radius: 5px;
-    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+#menuButton {
+    position: fixed;
+    left: 20px;
+    top: 20px;
+    z-index: 999;
 }
 
-.sidebar-sticky {
-    position: relative;
-    top: 0;
-    height: calc(100vh - 48px);
-    padding-top: 0.5rem;
-    overflow-x: hidden;
-    overflow-y: auto;
-    /* Scrollable contents if viewport is shorter than content. */
+#sidebarButtons {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    top: 70px;
+}
+
+.shrink-content {
+    transition: margin-left 0.3s ease;
+    margin-left: 200px;
 }
