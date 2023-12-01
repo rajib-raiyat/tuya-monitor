@@ -54,15 +54,15 @@
                 .then(data => {
                     console.log('Response from backend:', data);
 
-                    // Check if both "success" and "result" are true
-                    if (data.success && data.result) {
-                        statusMessage.innerText = 'Success!';
-                    } else {
-                        statusMessage.innerText = 'Error: Unexpected response from the backend.';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error sending status to backend:', error);
+                // Check if both "success" and "result" are true
+                if (data.success && data.result) {
+                    statusMessage.innerText = 'Success!';
+                } else {
+                    statusMessage.innerText = 'Can not connect to the device.';
+                }
+            })
+            .catch(error => {
+                console.error('Error sending status to backend:', error);
 
                     // Display an error message
                     statusMessage.innerText = 'Error: Unable to communicate with the backend.';
