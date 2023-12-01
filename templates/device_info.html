@@ -58,7 +58,7 @@
                 if (data.success && data.result) {
                     statusMessage.innerText = 'Success!';
                 } else {
-                    statusMessage.innerText = 'Error: Unexpected response from the backend.';
+                    statusMessage.innerText = 'Can not connect to the device.';
                 }
             })
             .catch(error => {
