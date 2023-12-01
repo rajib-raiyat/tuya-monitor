@@ -2,11 +2,9 @@ body {
     display: flex;
     height: 100vh;
     margin: 0;
-    /* background: black; */
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
-    /* Replace 'your-background-image.jpg' with your actual image file */
     background-size: cover;
 }
 
@@ -26,7 +24,7 @@ body {
 #content {
     flex: 1;
     padding: 20px;
-    color: #fff;
+    color: #000000;
 }
 
 #menuButton {

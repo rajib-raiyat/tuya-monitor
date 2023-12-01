@@ -20,6 +20,11 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/home-page')
+def homepage():
+    return render_template('homepage.html')
+
+
 @app.route('/device-info')
 def device_info():
     info = get_device_info()
