@@ -2,6 +2,7 @@ import json
 import os
 from datetime import datetime, timedelta
 
+import pandas as pd
 from dotenv import load_dotenv
 from tuya_connector import TuyaOpenAPI
 
@@ -94,3 +95,13 @@ def set_device_control(value):
     )
 
     return response
+
+
+def calculate_total_cost(start_datetime, end_datetime):
+    df = pd.read_csv('temp/device_log.csv', parse_dates=['TimeStamp'])
+    df = df.sort_values(by='TimeStamp', ascending=True)
+
+    filtered_df = df[(df['TimeStamp'] >= start_datetime) & (df['TimeStamp'] <= end_datetime)]
+    total_cost = filtered_df['Cost per 1 Minute (BDT)'].sum()
+
+    return total_cost

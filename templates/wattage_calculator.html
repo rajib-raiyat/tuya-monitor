@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Wattage Calculator</title>
+    <link href="{{ url_for('static', filename='assets/favicon.ico') }}" rel="shortcut icon">
+</head>
+<body>
+<h1>Wattage Calculator</h1>
+
+{% if timestamp %}
+<p>Timestamp: {{ timestamp }}</p>
+<p>Wattage: {{ wattage }} W</p>
+<br>
+<a href="{{ url_for('wattage_calculator') }}">Go back to Wattage Calculator</a>
+{% else %}
+<form action="{{ url_for('wattage_calculator') }}" method="post">
+    <label for="selected_timestamp">Select Timestamp:</label>
+    <select id="selected_timestamp" name="selected_timestamp" required>
+        {% for timestamp in timestamps %}
+        <option value="{{ timestamp }}">{{ timestamp }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <input type="submit" value="Calculate Wattage">
+</form>
+<br>
+<a href="{{ url_for('index') }}">Go back to home</a>
+{% endif %}
+</body>
+</html>
