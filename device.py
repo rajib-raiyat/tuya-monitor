@@ -47,12 +47,12 @@ def get_real_time_update():
     else:
         device_logs = response['result']['logs']
 
-        if not len(device_logs):
+        if not len(device_logs) or len(device_logs) < 2:
             print('....')
             with open('temp/log-data.json', 'r') as f:
                 device_logs = json.loads(f.read())
         else:
-            print('getting results...')    
+            print('getting results...')
 
     # Filter logs for 'cur_current' and 'cur_power' events
     cur_current_logs = [log for log in device_logs if log['code'] == 'cur_current']

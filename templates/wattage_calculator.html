@@ -15,7 +15,7 @@
 <p>Timestamp: {{ timestamp }}</p>
 <p>Wattage: {{ wattage }} W</p>
 <br>
-<a href="{{ url_for('wattage_calculator') }}">Go back to Wattage Calculator</a> {% else %}
+{% else %}
 <form action="{{ url_for('wattage_calculator') }}" method="post">
     <label for="selected_timestamp">Select Timestamp:</label>
     <select id="selected_timestamp" name="selected_timestamp" required>
