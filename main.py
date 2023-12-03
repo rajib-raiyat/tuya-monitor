@@ -29,18 +29,10 @@ def index():
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template('dashboard.html')
-
-
-@app.route('/device-info')
-def device_info():
     info = get_device_info()
 
-    return render_template(
-        'device_info.html',
-        device_info=info,
-        human_readable_time=human_readable_time
-    )
+    return render_template('dashboard.html', device_info=info,
+                           human_readable_time=human_readable_time)
 
 
 @app.route('/device-control', methods=['POST'])

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Tuya Device Real-time Power Uses</title>
+    <title>Tuya Monitor</title>
     <!-- Include required Chart.js library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="{{ url_for('static', filename='assets/favicon.ico') }}" rel="shortcut icon">
@@ -14,7 +14,7 @@
 <body>
 <h1>Tuya Device Real-time Power Uses</h1>
 <!-- Add a button to go to the home page -->
-<button onclick="goToHome()">Go to Home</button>
+<button onclick="goToDashboard()">Back</button>
 <!-- Placeholder for the line chart -->
 <canvas id="lineChart" style="width: 50%; height: 50%"></canvas>
 <!-- Include your SocketIO connection script -->
@@ -114,8 +114,8 @@
         }
     }
 
-    function goToHome() {
-        window.location.href = '/';
+    function goToDashboard() {
+        window.location.href = '/dashboard';
     }
 </script>
 </body>

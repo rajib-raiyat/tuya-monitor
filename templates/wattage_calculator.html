@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Wattage Calculator</title>
+    <title>Tuya Monitor</title>
     <link href="{{ url_for('static', filename='assets/favicon.ico') }}" rel="shortcut icon">
 </head>
+
 <body>
 <h1>Wattage Calculator</h1>
-
+<button onclick="goToDashboard()">Back</button>
 {% if timestamp %}
 <p>Timestamp: {{ timestamp }}</p>
 <p>Wattage: {{ wattage }} W</p>
 <br>
-<a href="{{ url_for('wattage_calculator') }}">Go back to Wattage Calculator</a>
-{% else %}
+<a href="{{ url_for('wattage_calculator') }}">Go back to Wattage Calculator</a> {% else %}
 <form action="{{ url_for('wattage_calculator') }}" method="post">
     <label for="selected_timestamp">Select Timestamp:</label>
     <select id="selected_timestamp" name="selected_timestamp" required>
@@ -25,8 +26,13 @@
     <br>
     <input type="submit" value="Calculate Wattage">
 </form>
-<br>
-<a href="{{ url_for('index') }}">Go back to home</a>
-{% endif %}
+<br> {% endif %}
+
+<script>
+    function goToDashboard() {
+        window.location.href = '/dashboard';
+    }
+</script>
 </body>
+
 </html>

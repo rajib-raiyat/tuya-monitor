@@ -20,15 +20,6 @@ openapi = TuyaOpenAPI(
 openapi.connect()
 
 
-# # Retrieve device status
-# response1 = openapi.get(f"/v1.0/devices/{DEVICE_ID}/status", params={"schema": True})
-# # print("Device Status:", response1)
-#
-# # Retrieve device details
-# response2 = openapi.get(f"/v1.0/devices/{DEVICE_ID}", params={"schema": True})
-# # print("Device Details:", response2)
-
-
 async def get_updates():
     latest_cur_current, latest_cur_power = get_real_time_update()
     return latest_cur_current, latest_cur_power
@@ -55,7 +46,13 @@ def get_real_time_update():
             device_logs = json.loads(f.read())
     else:
         device_logs = response['result']['logs']
-        print('getting results...')
+
+        if not len(device_logs):
+            print('....')
+            with open('temp/log-data.json', 'r') as f:
+                device_logs = json.loads(f.read())
+        else:
+            print('getting results...')    
 
     # Filter logs for 'cur_current' and 'cur_power' events
     cur_current_logs = [log for log in device_logs if log['code'] == 'cur_current']
