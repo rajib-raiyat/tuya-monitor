@@ -21,8 +21,8 @@ openapi.connect()
 
 
 async def get_updates():
-    latest_cur_current, latest_cur_power = get_real_time_update()
-    return latest_cur_current, latest_cur_power
+    latest_cur_current, latest_cur_power, latest_cur_voltage = get_real_time_update()
+    return latest_cur_current, latest_cur_power, latest_cur_voltage
 
 
 def get_real_time_update():
@@ -55,13 +55,17 @@ def get_real_time_update():
             print('getting results...')
 
     # Filter logs for 'cur_current' and 'cur_power' events
+    cur_voltage_logs = [log for log in device_logs if log['code'] == 'cur_voltage']
     cur_current_logs = [log for log in device_logs if log['code'] == 'cur_current']
     cur_power_logs = [log for log in device_logs if log['code'] == 'cur_power']
 
     # Find the latest 'cur_current' and 'cur_power' values
     latest_cur_current = max(cur_current_logs, key=lambda x: x['event_time'])
     latest_cur_power = max(cur_power_logs, key=lambda x: x['event_time'])
-    return latest_cur_current, latest_cur_power
+    latest_cur_voltage = max(cur_voltage_logs, key=lambda x: x['event_time'])
+    latest_cur_voltage['value'] = str(round(int(latest_cur_voltage['value']) / 10))
+
+    return latest_cur_current, latest_cur_power, latest_cur_voltage
 
 
 def get_device_info():
