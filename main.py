@@ -27,9 +27,9 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/home-page')
-def homepage():
-    return render_template('homepage.html')
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
 
 
 @app.route('/device-info')
@@ -62,21 +62,6 @@ def power_monitor():
 def go_to_power_monitor():
     # Redirect to the power monitor page
     return redirect(url_for('power_monitor'))
-
-
-def human_readable_time(timestamp):
-    return datetime.fromtimestamp(timestamp).strftime('%d %b, %Y - %I:%M %p %A')
-
-
-@socketio.on('connect')
-def handle_connect():
-    print('Client connected')
-    device_data = get_real_time_update()
-    if device_data:
-        socketio.emit('logs', {'logs': device_data}, namespace='/')
-
-    # Start the background task when a client connects
-    start_background_task()
 
 
 @app.route('/total-price', methods=['GET', 'POST'])
@@ -158,6 +143,21 @@ def daily_energy_analysis():
     plt.close()  # Close the plot to release resources
 
     return render_template('energy_analysis.html', img_base64=img_base64)
+
+
+def human_readable_time(timestamp):
+    return datetime.fromtimestamp(timestamp).strftime('%d %b, %Y - %I:%M %p %A')
+
+
+@socketio.on('connect')
+def handle_connect():
+    print('Client connected')
+    device_data = get_real_time_update()
+    if device_data:
+        socketio.emit('logs', {'logs': device_data}, namespace='/')
+
+    # Start the background task when a client connects
+    start_background_task()
 
 
 @socketio.on('disconnect')

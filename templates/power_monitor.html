@@ -83,9 +83,6 @@
                     },
                     tooltips: {
                         callbacks: {
-                            title: function (tooltipItem, data) {
-                                return data.labels[tooltipItem[0].index];
-                            },
                             label: function (tooltipItem, data) {
                                 return 'Value: ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
                             }

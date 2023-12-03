@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Tuya Monitor</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+        }
+
+        /* Left Sidebar */
+        .sidebar {
+            width: 200px;
+            height: 100vh;
+            background: url('../static/assets/homepage_backgroud.jpg') no-repeat center center fixed;
+            background-size: cover;
+            position: fixed;
+            z-index: 1;
+            padding-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar h1 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Main Content */
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333; /* Change color according to your design */
+        }
+
+        /* Sidebar Buttons */
+        .sidebar-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .sidebar-button {
+            background-color: #333;
+            color: #fff;
+            padding: 15px 20px; /* Adjusted padding */
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .sidebar-button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+
+<body>
+<!-- Left Sidebar -->
+<div class="sidebar">
+    <div>
+        <h1 onclick="window.location.href='/'">Tuya Monitor</h1>
+    </div>
+
+    <!-- Sidebar Buttons -->
+    <div class="sidebar-buttons">
+        <button class="sidebar-button">Button 1</button>
+        <button class="sidebar-button">Button 2</button>
+        <button class="sidebar-button">Button 3</button>
+        <button class="sidebar-button">Button 4</button>
+        <button class="sidebar-button">Button 5</button>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="content">
+    <h1>Hi</h1>
+</div>
+</body>
+
+</html>
+
