@@ -10,33 +10,72 @@
     <style>
         body {
             background-color: #efdfd4; /* Bootstrap's light gray background color */
+            margin: 0; /* Remove default margin */
         }
 
-        /* Text color for headlines */
-        {#h2, p {#}
-        {#    color: #212529; /* Bootstrap's dark text color */#}
-        {
-        #}#}
+        /* Added a container to wrap content */
+        .container {
+            max-width: 1070px; /* Adjust the max-width as needed */
+            margin: 0 auto;
+        }
+
+        .whole {
+            display: flex; /* Use flexbox for layout */
+            flex-direction: column; /* Stack elements vertically by default */
+            justify-content: space-between; /* Space between the two elements */
+            padding: 20px; /* Add some padding for better spacing */
+        }
+
+        .text,
+        .image {
+            {#width: 100%; /* Take up full width by default */#}
+            flex: 1 100%;
+            padding: 20px 0; /* Add padding for better spacing */
+        }
+
+        @media (min-width: 768px) {
+            .whole {
+                flex-direction: row; /* Arrange elements side by side on larger screens */
+            }
+
+            .text {
+                flex: 1; /* Take up remaining space */
+                padding-right: 20px; /* Add padding between text and image */
+            }
+
+            .image {
+                flex: 1; /* Take up remaining space */
+            }
+        }
+
+        img {
+            width: 100%; /* Make the image fill its container */
+            max-width: 100%; /* Ensure it doesn't exceed its natural size */
+            height: auto; /* Maintain aspect ratio */
+        }
     </style>
 
 </head>
 
 <body>
-<div class="container-fluid">
-    <div class="row mb justify-content-center align-items-center" style="margin-top: 60px; margin-left: 100px">
 
-
-        <!-- Headline in the center -->
-        <div class="col text-center">
-            <h1>Your Headline</h1>
+<div class="container">
+    <div class="whole">
+        <div class="text">
+            <h1>This is our Homepage</h1>
+            <p>
+                lorem ipsum
+            </p>
+            <button>
+                About Us
+            </button>
         </div>
-
-        <!-- Logo on the right -->
-        <div class="col text-right">
-            <img src="../static/assets/logo2.png" alt="Logo" width="350">
+        <div class="image">
+            <img src="../static/assets/logo2.png" alt="Logo">
         </div>
     </div>
 </div>
+
 <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
         crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
