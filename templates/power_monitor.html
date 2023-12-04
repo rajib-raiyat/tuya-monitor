@@ -1,4 +1,3 @@
-{%extends "navbar.html"%}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,6 +11,7 @@
 
 </head>
 
+{% extends "navbar.html" %}
 <body style="margin-left: 400px;">
     {%block power%}
     <div style="margin-left: 450px;"></div>
@@ -20,9 +20,7 @@
     <!-- Add a button to go to the home page -->
     <button onclick="goToDashboard()">Back</button>
     <!-- Placeholder for the line chart -->
-
     <canvas id="lineChart" style="width: 50%; height: 50%"></canvas>
-    </div>
     <!-- Include your SocketIO connection script -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <script>
