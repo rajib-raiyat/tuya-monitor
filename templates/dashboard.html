@@ -38,10 +38,10 @@
             <!-- Buttons to send true or false -->
             <button onclick="sendStatus(true)">Trun of the device</button>
             <button onclick="sendStatus(false)">Trun off teh device</button>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 12px">
 
-            <!-- Message element -->
-            <p id="status-message"></p>
-
+                <div style="padding-top: 140px">
+                    <p id="status-message"></p>
             <ul>
                 <img alt="Device Icon" height="150" src="https://images.tuyacn.com/{{ device_info['icon'] }}"
                     width="150">
@@ -54,12 +54,12 @@
                 <li><strong>Create Time:</strong> {{ human_readable_time(device_info['create_time']) }}</li>
                 <li><strong>IP Address:</strong> {{ device_info['ip'] }}</li>
             </ul>
-
-            <iframe height="300"
+                </div>
+                <iframe height="700"
                 src="https://maps.google.com/maps?q={{ device_info['lat'] }},{{ device_info['lon'] }}&hl=us&z=14&amp;output=embed"
-                width="300">
+                        width="600">
             </iframe>
-
+            </div>
         </div>
     </div>
 
