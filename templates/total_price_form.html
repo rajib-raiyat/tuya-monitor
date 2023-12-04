@@ -6,29 +6,36 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Tuya Monitor</title>
     <link href="{{ url_for('static', filename='assets/favicon.ico') }}" rel="shortcut icon">
-
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+        }
+    </style>
 </head>
+{%extends "navbar.html"%}
 
 <body>
-<h1>Total Price Calculation</h1>
-<button onclick="goToDashboard()">Back</button>
-
-<form action="{{ url_for('total_price') }}" method="post">
-    <label for="start_datetime">Start Date and Time:</label>
-    <input id="start_datetime" name="start_datetime" required type="datetime-local"
-           value="{{ default_start_date.strftime('%Y-%m-%dT%H:%M') }}">
-    <br>
-    <label for="end_datetime">End Date and Time:</label>
-    <input id="end_datetime" name="end_datetime" required type="datetime-local"
-           value="{{ default_end_date.strftime('%Y-%m-%dT%H:%M') }}">
-    <br>
-    <input type="submit" value="Calculate Total Price">
-</form>
-<script>
-    function goToDashboard() {
-        window.location.href = '/dashboard';
-    }
-</script>
+    {%block total%}
+    <div>
+        <h1>Total Price Calculation</h1>
+        <div style="margin-left: 250px;">
+            <form action="{{ url_for('total_price') }}" method="post">
+                <label for="start_datetime">Start Date and Time:</label>
+                <input id="start_datetime" name="start_datetime" required type="datetime-local"
+                    value="{{ default_start_date.strftime('%Y-%m-%dT%H:%M') }}">
+                <br>
+                <label for="end_datetime">End Date and Time:</label>
+                <input id="end_datetime" name="end_datetime" required type="datetime-local"
+                    value="{{ default_end_date.strftime('%Y-%m-%dT%H:%M') }}">
+                <br>
+                <input type="submit" value="Calculate Total Price">
+            </form>
+        </div>
+    </div>
+    {%endblock%}
 </body>
 
 </html>
