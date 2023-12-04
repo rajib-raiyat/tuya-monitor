@@ -1,4 +1,4 @@
-{%extends "navbar.html"%}
+{% extends "navbar.html" %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,6 +6,8 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <link href="{{ url_for('static', filename='assets/favicon.ico') }}" rel="shortcut icon">
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" rel="stylesheet">
     <title>Tuya Monitor</title>
 
     <style>
@@ -13,7 +15,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Arial', sans-serif;
-            display: flex;
+            display: block;
         }
 
         /* Main Content */
@@ -25,9 +27,9 @@
 </head>
 
 <body>
-    <!-- Left Sidebar -->
+<!-- Left Sidebar -->
 
-    {%block dashboard%}
+{% block dashboard %}
 
 
     <!-- Main Content -->
@@ -36,29 +38,37 @@
             <h1>Device Information</h1>
 
             <!-- Buttons to send true or false -->
-            <button onclick="sendStatus(true)">Trun of the device</button>
-            <button onclick="sendStatus(false)">Trun off teh device</button>
+
             <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 12px">
 
-                <div style="padding-top: 140px">
+                <div style="padding-top: 100px">
                     <p id="status-message"></p>
-            <ul>
-                <img alt="Device Icon" height="150" src="https://images.tuyacn.com/{{ device_info['icon'] }}"
-                    width="150">
-                <li><strong>Product Name:</strong> {{ device_info['product_name'] }}</li>
-                <li><strong>Product Model:</strong> {{ device_info['model'] }}</li>
-                <li><strong>Is Sub-device:</strong> {{ "Yes" if device_info['sub'] else "No" }}</li>
-                <li><strong>Online:</strong> {{ "Yes" if device_info['online'] else "No" }}</li>
-                <li><strong>Active Time:</strong> {{ human_readable_time(device_info['active_time']) }}</li>
-                <li><strong>Update Time:</strong> {{ human_readable_time(device_info['update_time']) }}</li>
-                <li><strong>Create Time:</strong> {{ human_readable_time(device_info['create_time']) }}</li>
-                <li><strong>IP Address:</strong> {{ device_info['ip'] }}</li>
-            </ul>
+                    <img alt="Device Icon" height="300" src="https://images.tuyacn.com/{{ device_info['icon'] }}"
+                         width="300">
+                    <div>
+                        <button onclick="sendStatus(true)">Turn
+                            on the device
+                        </button>
+                        <button onclick="sendStatus(false)">Turn off the device</button>
+                    </div>
+
+                    <ul style="font-size: large">
+
+
+                        <li><strong>Product Name:</strong> {{ device_info['product_name'] }}</li>
+                        <li><strong>Product Model:</strong> {{ device_info['model'] }}</li>
+                        <li><strong>Is Sub-device:</strong> {{ "Yes" if device_info['sub'] else "No" }}</li>
+                        <li><strong>Online:</strong> {{ "Yes" if device_info['online'] else "No" }}</li>
+                        <li><strong>Active Time:</strong> {{ human_readable_time(device_info['active_time']) }}</li>
+                        <li><strong>Update Time:</strong> {{ human_readable_time(device_info['update_time']) }}</li>
+                        <li><strong>Create Time:</strong> {{ human_readable_time(device_info['create_time']) }}</li>
+                        <li><strong>IP Address:</strong> {{ device_info['ip'] }}</li>
+                    </ul>
                 </div>
                 <iframe height="700"
-                src="https://maps.google.com/maps?q={{ device_info['lat'] }},{{ device_info['lon'] }}&hl=us&z=14&amp;output=embed"
+                        src="https://maps.google.com/maps?q={{ device_info['lat'] }},{{ device_info['lon'] }}&hl=us&z=14&amp;output=embed"
                         width="600">
-            </iframe>
+                </iframe>
             </div>
         </div>
     </div>
@@ -76,7 +86,7 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ status: value }),
+                body: JSON.stringify({status: value}),
             })
                 .then(response => response.json())
                 .then(data => {
@@ -100,7 +110,7 @@
         // Function to navigate to the home page
 
     </script>
-    {%endblock%}
+{% endblock %}
 
 </body>
 
