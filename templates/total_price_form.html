@@ -21,9 +21,7 @@
     {%block total%}
     <div>
         <h1>Total Price Calculation</h1>
-        <button onclick="goToDashboard()">Back</button>
         <div style="margin-left: 250px;">
-
             <form action="{{ url_for('total_price') }}" method="post">
                 <label for="start_datetime">Start Date and Time:</label>
                 <input id="start_datetime" name="start_datetime" required type="datetime-local"
@@ -37,11 +35,6 @@
             </form>
         </div>
     </div>
-    <script>
-        function goToDashboard() {
-            window.location.href = '/dashboard';
-        }
-    </script>
     {%endblock%}
 </body>
 
