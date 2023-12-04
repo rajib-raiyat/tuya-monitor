@@ -19,42 +19,31 @@
 
         /* Main Content */
         .content {
-            flex: 1;
-            padding-left: 200px;
+            padding-left: 15px; /* Adjusted padding for better appearance */
         }
     </style>
 </head>
-{%extends "navbar.html"%}
+{% extends "navbar.html" %}
 
 <body>
-<!-- Left Sidebar -->
-
 {% block dashboard %}
 
-
     <!-- Main Content -->
-    <div style="margin-left: 250px;">
+<div class="container-fluid">
         <div class="content">
             <h1>Device Information</h1>
-
-            <!-- Buttons to send true or false -->
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 12px">
-
-                <div style="padding-top: 100px">
+            <div class="row">
+                <div class="col-md-6" style="padding-left: 200px">
                     <p id="status-message"></p>
-                    <img alt="Device Icon" height="300" src="https://images.tuyacn.com/{{ device_info['icon'] }}"
+                    <img alt="Device Icon" class="img-fluid" src="https://images.tuyacn.com/{{ device_info['icon'] }}"
                          width="300">
+
                     <div>
-                        <button onclick="sendStatus(true)">Turn
-                            on the device
-                        </button>
+                        <button onclick="sendStatus(true)">Turn on the device</button>
                         <button onclick="sendStatus(false)">Turn off the device</button>
                     </div>
 
                     <ul style="font-size: large">
-
-
                         <li><strong>Product Name:</strong> {{ device_info['product_name'] }}</li>
                         <li><strong>Product Model:</strong> {{ device_info['model'] }}</li>
                         <li><strong>Is Sub-device:</strong> {{ "Yes" if device_info['sub'] else "No" }}</li>
@@ -65,10 +54,13 @@
                         <li><strong>IP Address:</strong> {{ device_info['ip'] }}</li>
                     </ul>
                 </div>
-                <iframe height="700"
-                        src="https://maps.google.com/maps?q={{ device_info['lat'] }},{{ device_info['lon'] }}&hl=us&z=14&amp;output=embed"
-                        width="600">
-                </iframe>
+                <div class="col-md-6" style="padding-top: 30px">
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item" height="500"
+                                src="https://maps.google.com/maps?q={{ device_info['lat'] }},{{ device_info['lon'] }}&hl=us&z=14&amp;output=embed"
+                                width="500"></iframe>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -108,7 +100,6 @@
         }
 
         // Function to navigate to the home page
-
     </script>
 {% endblock %}
 
