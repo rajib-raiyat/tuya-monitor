@@ -1,3 +1,4 @@
+{%extends "navbar.html"%}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,162 +16,91 @@
             display: flex;
         }
 
-        /* Left Sidebar */
-        .sidebar {
-            width: 200px;
-            height: 100vh;
-            background: url('../static/assets/homepage_backgroud.jpg') no-repeat center center fixed;
-            background-size: cover;
-            position: fixed;
-            z-index: 1;
-            padding-top: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .sidebar h1 {
-            color: #fff;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
         /* Main Content */
         .content {
             flex: 1;
             padding-left: 200px;
         }
-
-        h1 {
-            text-align: center;
-            color: #333; /* Change color according to your design */
-        }
-
-        /* Sidebar Buttons */
-        .sidebar-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .sidebar-button {
-            background-color: #333;
-            color: #fff;
-            padding: 15px 20px; /* Adjusted padding */
-            text-align: center;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease-in-out;
-        }
-
-        .sidebar-button:hover {
-            background-color: #555;
-        }
     </style>
 </head>
 
 <body>
-<!-- Left Sidebar -->
-<div class="sidebar">
-    <!-- Sidebar Buttons -->
-    <div class="sidebar-buttons">
-        <h1 onclick="window.location.href='/'">Tuya Monitor</h1>
+    <!-- Left Sidebar -->
 
-        <button class="sidebar-button" onclick="redirectToPowerMonitor()">Power Monitor</button>
-        <button class="sidebar-button" onclick="redirectToTotalPrice()">Total Price Calculator</button>
-        <button class="sidebar-button" onclick="redirectToWattageCalculator()">Wattage Calculator</button>
-        <button class="sidebar-button" onclick="redirectToDailyEnergyAnalysis()">Daily Energy Analysis</button>
+    {%block dashboard%}
+
+
+    <!-- Main Content -->
+    <div style="margin-left: 250px;">
+        <div class="content">
+            <h1>Device Information</h1>
+
+            <!-- Buttons to send true or false -->
+            <button onclick="sendStatus(true)">Trun of the device</button>
+            <button onclick="sendStatus(false)">Trun off teh device</button>
+
+            <!-- Message element -->
+            <p id="status-message"></p>
+
+            <ul>
+                <img alt="Device Icon" height="150" src="https://images.tuyacn.com/{{ device_info['icon'] }}"
+                    width="150">
+                <li><strong>Product Name:</strong> {{ device_info['product_name'] }}</li>
+                <li><strong>Product Model:</strong> {{ device_info['model'] }}</li>
+                <li><strong>Is Sub-device:</strong> {{ "Yes" if device_info['sub'] else "No" }}</li>
+                <li><strong>Online:</strong> {{ "Yes" if device_info['online'] else "No" }}</li>
+                <li><strong>Active Time:</strong> {{ human_readable_time(device_info['active_time']) }}</li>
+                <li><strong>Update Time:</strong> {{ human_readable_time(device_info['update_time']) }}</li>
+                <li><strong>Create Time:</strong> {{ human_readable_time(device_info['create_time']) }}</li>
+                <li><strong>IP Address:</strong> {{ device_info['ip'] }}</li>
+            </ul>
+
+            <iframe height="300"
+                src="https://maps.google.com/maps?q={{ device_info['lat'] }},{{ device_info['lon'] }}&hl=us&z=14&amp;output=embed"
+                width="300">
+            </iframe>
+
+        </div>
     </div>
-</div>
 
-<!-- Main Content -->
-<div class="content">
-    <h1>Device Information</h1>
+    <script>
+        function sendStatus(value) {
+            const backendURL = '/device-control';
+            const statusMessage = document.getElementById('status-message');
 
-    <!-- Buttons to send true or false -->
-    <button onclick="sendStatus(true)">Trun of the device</button>
-    <button onclick="sendStatus(false)">Trun off teh device</button>
+            // Display a loading message while waiting for the response
+            statusMessage.innerText = 'Loading...';
 
-    <!-- Message element -->
-    <p id="status-message"></p>
-
-    <ul>
-        <img alt="Device Icon" height="150" src="https://images.tuyacn.com/{{ device_info['icon'] }}" width="150">
-        <li><strong>Product Name:</strong> {{ device_info['product_name'] }}</li>
-        <li><strong>Product Model:</strong> {{ device_info['model'] }}</li>
-        <li><strong>Is Sub-device:</strong> {{ "Yes" if device_info['sub'] else "No" }}</li>
-        <li><strong>Online:</strong> {{ "Yes" if device_info['online'] else "No" }}</li>
-        <li><strong>Active Time:</strong> {{ human_readable_time(device_info['active_time']) }}</li>
-        <li><strong>Update Time:</strong> {{ human_readable_time(device_info['update_time']) }}</li>
-        <li><strong>Create Time:</strong> {{ human_readable_time(device_info['create_time']) }}</li>
-        <li><strong>IP Address:</strong> {{ device_info['ip'] }}</li>
-    </ul>
-
-    <iframe height="300"
-            src="https://maps.google.com/maps?q={{ device_info['lat'] }},{{ device_info['lon'] }}&hl=us&z=14&amp;output=embed"
-            width="300">
-    </iframe>
-
-</div>
-
-<script>
-    function sendStatus(value) {
-        const backendURL = '/device-control';
-        const statusMessage = document.getElementById('status-message');
-
-        // Display a loading message while waiting for the response
-        statusMessage.innerText = 'Loading...';
-
-        fetch(backendURL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({status: value}),
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Response from backend:', data);
-
-                // Check if both "success" and "result" are true
-                if (data.success && data.result) {
-                    statusMessage.innerText = 'Success!';
-                } else {
-                    statusMessage.innerText = 'Can not connect to the device.';
-                }
+            fetch(backendURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status: value }),
             })
-            .catch(error => {
-                console.error('Error sending status to backend:', error);
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Response from backend:', data);
 
-                // Display an error message
-                statusMessage.innerText = 'Error: Unable to communicate with the backend.';
-            });
-    }
+                    // Check if both "success" and "result" are true
+                    if (data.success && data.result) {
+                        statusMessage.innerText = 'Success!';
+                    } else {
+                        statusMessage.innerText = 'Can not connect to the device.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error sending status to backend:', error);
 
-    // Function to navigate to the home page
-    function goToHome() {
-        window.location.href = '/';
-    }
+                    // Display an error message
+                    statusMessage.innerText = 'Error: Unable to communicate with the backend.';
+                });
+        }
 
-    function redirectToPowerMonitor() {
-        window.location.href = '/power-monitor'
-    }
+        // Function to navigate to the home page
 
-    function redirectToTotalPrice() {
-        window.location.href = '/total-price'
-    }
-
-    function redirectToWattageCalculator() {
-        window.location.href = '/wattage-calculator'
-    }
-
-    function redirectToDailyEnergyAnalysis() {
-        window.location.href = '/daily-energy-analysis'
-    }
-</script>
+    </script>
+    {%endblock%}
 
 </body>
 
