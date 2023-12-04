@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Tuya Monitor</title>
+    <link href="{{ url_for('static', filename='assets/favicon.ico') }}" rel="shortcut icon">
+
+</head>
+
+<body>
+<button onclick="goToDashboard()">Back</button>
+
+<h1>Total Price for {{ start_datetime.date() }} to {{ end_datetime.date() }}</h1>
+<p>Total Cost: {{ total_cost }}</p>
+
+<script>
+    function goToDashboard() {
+        window.location.href = '/total-price';
+    }
+</script>
+</body>
+
+</html>

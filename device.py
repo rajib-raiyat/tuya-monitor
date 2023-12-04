@@ -2,6 +2,7 @@ import json
 import os
 from datetime import datetime, timedelta
 
+import pandas as pd
 from dotenv import load_dotenv
 from tuya_connector import TuyaOpenAPI
 
@@ -17,15 +18,6 @@ openapi = TuyaOpenAPI(
 )
 
 openapi.connect()
-
-
-# # Retrieve device status
-# response1 = openapi.get(f"/v1.0/devices/{DEVICE_ID}/status", params={"schema": True})
-# # print("Device Status:", response1)
-#
-# # Retrieve device details
-# response2 = openapi.get(f"/v1.0/devices/{DEVICE_ID}", params={"schema": True})
-# # print("Device Details:", response2)
 
 
 async def get_updates():
@@ -54,7 +46,13 @@ def get_real_time_update():
             device_logs = json.loads(f.read())
     else:
         device_logs = response['result']['logs']
-        print('getting results...')
+
+        if not len(device_logs) or len(device_logs) < 2:
+            print('....')
+            with open('temp/log-data.json', 'r') as f:
+                device_logs = json.loads(f.read())
+        else:
+            print('getting results...')
 
     # Filter logs for 'cur_current' and 'cur_power' events
     cur_current_logs = [log for log in device_logs if log['code'] == 'cur_current']
@@ -94,3 +92,13 @@ def set_device_control(value):
     )
 
     return response
+
+
+def calculate_total_cost(start_datetime, end_datetime):
+    df = pd.read_csv('temp/device_log.csv', parse_dates=['TimeStamp'])
+    df = df.sort_values(by='TimeStamp', ascending=True)
+
+    filtered_df = df[(df['TimeStamp'] >= start_datetime) & (df['TimeStamp'] <= end_datetime)]
+    total_cost = filtered_df['Cost per 1 Minute (BDT)'].sum()
+
+    return total_cost
