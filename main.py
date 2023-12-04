@@ -87,6 +87,7 @@ def wattage_calculator():
 
     return render_template('wattage_calculator.html', chart_html=chart_html)
 
+
 @app.route('/daily-energy-analysis')
 def daily_energy_analysis():
     daily_energy_usage = df.groupby(df['TimeStamp'].dt.date)['kWh per 1 Minute'].sum().reset_index()
@@ -111,7 +112,7 @@ def human_readable_time(timestamp):
 @socketio.on('connect')
 def handle_connect():
     print('Client connected')
-    device_data = get_real_time_update()
+    device_data = get_real_time_update(keep_log=False)
     if device_data:
         socketio.emit('logs', {'logs': device_data}, namespace='/')
 
@@ -137,7 +138,7 @@ async def send_logs():
         device_data = await get_updates()
         if device_data:
             socketio.emit('logs', {'logs': device_data}, namespace='/')
-        await asyncio.sleep(10)
+        await asyncio.sleep(60)
 
 
 def start_background_task():

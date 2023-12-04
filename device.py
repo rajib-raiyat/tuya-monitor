@@ -1,8 +1,8 @@
+import csv
 import json
 import os
 from datetime import datetime, timedelta
 
-import pandas as pd
 from dotenv import load_dotenv
 from tuya_connector import TuyaOpenAPI
 
@@ -25,7 +25,7 @@ async def get_updates():
     return latest_cur_current, latest_cur_power, latest_cur_voltage
 
 
-def get_real_time_update():
+def get_real_time_update(keep_log=True):
     current_time = datetime.now()
     one_hour_ago = current_time - timedelta(minutes=10)
     end_time = round(one_hour_ago.timestamp() * 1000)
@@ -52,6 +52,37 @@ def get_real_time_update():
             with open('temp/log-data.json', 'r') as f:
                 device_logs = json.loads(f.read())
         else:
+            if keep_log:
+                realtime_data = {}
+
+                # Convert the obtained values to float before performing any division
+                current = float(
+                    next((item for item in device_logs if item['code'] == 'cur_current'), {}).get('value', 0))
+                power = float(
+                    next((item for item in device_logs if item['code'] == 'cur_power'), {}).get('value', 0)) / 10.0
+                voltage = float(
+                    next((item for item in device_logs if item['code'] == 'cur_voltage'), {}).get('value', 0)) / 10.0
+
+                # Calculate kWh per minute
+                kwh_minute = (power / 1000.0) * (1 / 60.0)  # Convert watts to kilowatts and calculate over 1 minute
+
+                # Calculate cost per minute based on consumption and fixed cost per kWh
+                cost_minute = kwh_minute * 8.84  # Assuming 8.84 is the cost per kWh
+
+                # Update real-time data
+                realtime_data['Timestamp'] = datetime.now().strftime('%m/%d/%Y %H:%M')
+                realtime_data['Current'] = current
+                realtime_data['Voltage'] = voltage
+                realtime_data['Power'] = power
+                realtime_data['kWh per 1 Minute'] = kwh_minute
+                realtime_data['Cost per 1 Minute (BDT)'] = cost_minute
+
+                fieldnames = ['Timestamp', 'Current', 'Voltage', 'Power', 'kWh per 1 Minute', 'Cost per 1 Minute (BDT)']
+
+                with open('temp/device_log.csv', 'a', newline='') as csvfile:
+                    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                    writer.writerow(realtime_data)
+
             print('getting results...')
 
     # Filter logs for 'cur_current' and 'cur_power' events
@@ -96,13 +127,3 @@ def set_device_control(value):
     )
 
     return response
-
-
-def calculate_total_cost(start_datetime, end_datetime):
-    df = pd.read_csv('temp/device_log.csv', parse_dates=['TimeStamp'])
-    df = df.sort_values(by='TimeStamp', ascending=True)
-
-    filtered_df = df[(df['TimeStamp'] >= start_datetime) & (df['TimeStamp'] <= end_datetime)]
-    total_cost = filtered_df['Cost per 1 Minute (BDT)'].sum()
-
-    return total_cost
