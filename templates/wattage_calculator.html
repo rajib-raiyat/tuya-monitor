@@ -1,3 +1,4 @@
+{%extends "navbar.html"%}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,30 +10,34 @@
 </head>
 
 <body>
-<h1>Wattage Calculator</h1>
-<button onclick="goToDashboard()">Back</button>
-{% if timestamp %}
-<p>Timestamp: {{ timestamp }}</p>
-<p>Wattage: {{ wattage }} W</p>
-<br>
-{% else %}
-<form action="{{ url_for('wattage_calculator') }}" method="post">
-    <label for="selected_timestamp">Select Timestamp:</label>
-    <select id="selected_timestamp" name="selected_timestamp" required>
-        {% for timestamp in timestamps %}
-        <option value="{{ timestamp }}">{{ timestamp }}</option>
-        {% endfor %}
-    </select>
-    <br>
-    <input type="submit" value="Calculate Wattage">
-</form>
-<br> {% endif %}
+    {%block wattage%}
+    <div style="margin-left: 250px;">
+        <h1>Wattage Calculator</h1>
+        <button onclick="goToDashboard()">Back</button>
+        {% if timestamp %}
+        <p>Timestamp: {{ timestamp }}</p>
+        <p>Wattage: {{ wattage }} W</p>
+        <br>
+        {% else %}
+        <form action="{{ url_for('wattage_calculator') }}" method="post">
+            <label for="selected_timestamp">Select Timestamp:</label>
+            <select id="selected_timestamp" name="selected_timestamp" required>
+                {% for timestamp in timestamps %}
+                <option value="{{ timestamp }}">{{ timestamp }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <input type="submit" value="Calculate Wattage">
+        </form>
+        <br> {% endif %}
+    </div>
 
-<script>
-    function goToDashboard() {
-        window.location.href = '/dashboard';
-    }
-</script>
+    <script>
+        function goToDashboard() {
+            window.location.href = '/dashboard';
+        }
+    </script>
+    {%endblock%}
 </body>
 
 </html>

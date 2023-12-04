@@ -1,3 +1,4 @@
+{%extends "navbar.html"%}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,113 +12,119 @@
 
 </head>
 
-<body>
-<h1>Tuya Device Real-time Power Uses</h1>
-<!-- Add a button to go to the home page -->
-<button onclick="goToDashboard()">Back</button>
-<!-- Placeholder for the line chart -->
-<canvas id="lineChart" style="width: 50%; height: 50%"></canvas>
-<!-- Include your SocketIO connection script -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
-<script>
-    var socket = io.connect('http://' + document.domain + ':' + location.port);
-    var myLineChart;
+<body style="margin-left: 400px;">
+    {%block power%}
+    <div style="margin-left: 450px;"></div>
 
-    socket.on('logs', function (msg) {
-        updateChart(msg.logs);
-    });
+    <h1>Tuya Device Real-time Power Uses</h1>
+    <!-- Add a button to go to the home page -->
+    <button onclick="goToDashboard()">Back</button>
+    <!-- Placeholder for the line chart -->
 
-    function updateChart(logs) {
-        // Extract data for each line
-        var curCurrentData = logs.filter(function (log) {
-            return log.code === 'cur_current';
+    <canvas id="lineChart" style="width: 50%; height: 50%"></canvas>
+    </div>
+    <!-- Include your SocketIO connection script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        var myLineChart;
+
+        socket.on('logs', function (msg) {
+            updateChart(msg.logs);
         });
 
-        var curPowerData = logs.filter(function (log) {
-            return log.code === 'cur_power';
-        });
+        function updateChart(logs) {
+            // Extract data for each line
+            var curCurrentData = logs.filter(function (log) {
+                return log.code === 'cur_current';
+            });
 
-        updateLineChart('lineChart', curCurrentData, 'Real-time Current', 'blue');
-        updateLineChart('lineChart', curPowerData, 'Real-time Power', 'red');
-    }
+            var curPowerData = logs.filter(function (log) {
+                return log.code === 'cur_power';
+            });
 
-    function updateLineChart(chartId, data, label, color) {
-        var flattenedLogs = data.flat();
+            updateLineChart('lineChart', curCurrentData, 'Real-time Current', 'blue');
+            updateLineChart('lineChart', curPowerData, 'Real-time Power', 'red');
+        }
 
-        var labels = flattenedLogs.map(function (log) {
-            return new Date(log.event_time).toLocaleTimeString();
-        });
+        function updateLineChart(chartId, data, label, color) {
+            var flattenedLogs = data.flat();
 
-        var values = flattenedLogs.map(function (log) {
-            return parseFloat(log.value);
-        });
+            var labels = flattenedLogs.map(function (log) {
+                return new Date(log.event_time).toLocaleTimeString();
+            });
 
-        var ctx = document.getElementById(chartId).getContext('2d');
+            var values = flattenedLogs.map(function (log) {
+                return parseFloat(log.value);
+            });
 
-        if (typeof myLineChart === 'undefined') {
-            myLineChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
+            var ctx = document.getElementById(chartId).getContext('2d');
+
+            if (typeof myLineChart === 'undefined') {
+                myLineChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: label,
+                            data: values,
+                            borderColor: color,
+                            borderWidth: 1,
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            xAxes: [{
+                                type: 'time',
+                                time: {
+                                    unit: 'second'
+                                }
+                            }],
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        },
+                        tooltips: {
+                            callbacks: {
+                                label: function (tooltipItem, data) {
+                                    return 'Value: ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                // Check if the dataset already exists, if not, create a new one
+                var datasetIndex = myLineChart.data.datasets.findIndex(function (dataset) {
+                    return dataset.label === label;
+                });
+
+                if (datasetIndex === -1) {
+                    myLineChart.data.datasets.push({
                         label: label,
                         data: values,
                         borderColor: color,
                         borderWidth: 1,
                         fill: false
-                    }]
-                },
-                options: {
-                    scales: {
-                        xAxes: [{
-                            type: 'time',
-                            time: {
-                                unit: 'second'
-                            }
-                        }],
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    },
-                    tooltips: {
-                        callbacks: {
-                            label: function (tooltipItem, data) {
-                                return 'Value: ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-                            }
-                        }
-                    }
+                    });
+                } else {
+                    // Update existing dataset with new data
+                    myLineChart.data.datasets[datasetIndex].data = values;
+                    myLineChart.data.labels = labels;
                 }
-            });
-        } else {
-            // Check if the dataset already exists, if not, create a new one
-            var datasetIndex = myLineChart.data.datasets.findIndex(function (dataset) {
-                return dataset.label === label;
-            });
 
-            if (datasetIndex === -1) {
-                myLineChart.data.datasets.push({
-                    label: label,
-                    data: values,
-                    borderColor: color,
-                    borderWidth: 1,
-                    fill: false
-                });
-            } else {
-                // Update existing dataset with new data
-                myLineChart.data.datasets[datasetIndex].data = values;
-                myLineChart.data.labels = labels;
+                myLineChart.update();
             }
-
-            myLineChart.update();
         }
-    }
 
-    function goToDashboard() {
-        window.location.href = '/dashboard';
-    }
-</script>
+        function goToDashboard() {
+            window.location.href = '/dashboard';
+        }
+    </script>
+    {%endblock%}
 </body>
 
 </html>

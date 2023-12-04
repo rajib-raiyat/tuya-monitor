@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* Left Sidebar */
+        .sidebar {
+            width: 200px;
+            height: 100vh;
+            background: url('../static/assets/homepage_backgroud.jpg') no-repeat center center fixed;
+            background-size: cover;
+            position: fixed;
+            z-index: 1;
+            padding-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar h1 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-button {
+            background-color: #333;
+            color: #fff;
+            padding: 15px 20px;
+            /* Adjusted padding */
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .sidebar-button:hover {
+            background-color: #555;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            /* Change color according to your design */
+        }
+
+        /* Sidebar Buttons */
+        .sidebar-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <!-- Sidebar Buttons -->
+        <div class="sidebar-buttons">
+            <h1 onclick="window.location.href='/'">Tuya Monitor</h1>
+
+
+            <button class="sidebar-button" onclick="redirectToDashboard()">Dashboard</button>
+            <button class="sidebar-button" onclick="redirectToPowerMonitor()">Power Monitor</button>
+            <button class="sidebar-button" onclick="redirectToTotalPrice()">Total Price Calculator</button>
+            <button class="sidebar-button" onclick="redirectToWattageCalculator()">Wattage Calculator</button>
+            <button class="sidebar-button" onclick="redirectToDailyEnergyAnalysis()">Daily Energy Analysis</button>
+        </div>
+    </div>
+    <script>
+        function goToHome() {
+            window.location.href = '/';
+        }
+        function redirectToDashboard() {
+            window.location.href = '/dashboard'
+        }
+
+        function redirectToPowerMonitor() {
+            window.location.href = '/power-monitor'
+        }
+
+        function redirectToTotalPrice() {
+            window.location.href = '/total-price'
+        }
+
+        function redirectToWattageCalculator() {
+            window.location.href = '/wattage-calculator'
+        }
+
+        function redirectToDailyEnergyAnalysis() {
+            window.location.href = '/daily-energy-analysis'
+        }
+    </script>
+    {%block dashboard%}
+    {%endblock%}
+    {%block power%}
+    {%endblock%}
+    {%block total%}
+    {%endblock%}
+    {%block wattage%}
+    {%endblock%}
+    {%block energy%}
+    {%endblock%}
+
+
+
+</body>
+
+</html>

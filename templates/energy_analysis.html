@@ -1,3 +1,4 @@
+{%extends "navbar.html"%}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,16 +10,20 @@
 </head>
 
 <body>
-<h1>Daily Energy Analysis</h1>
-<button onclick="goToDashboard()">Back</button>
+    {%block energy%}
+    <div style="margin-left: 250px;">
+        <h1>Daily Energy Analysis</h1>
+        <button onclick="goToDashboard()">Back</button>
 
-<img alt="Daily Energy Usage Trend Chart" src="data:image/png;base64,{{ img_base64 }}">
-<br>
-<script>
-    function goToDashboard() {
-        window.location.href = '/dashboard';
-    }
-</script>
+        <img alt="Daily Energy Usage Trend Chart" src="data:image/png;base64,{{ img_base64 }}">
+        <br>
+    </div>
+    <script>
+        function goToDashboard() {
+            window.location.href = '/dashboard';
+        }
+    </script>
+    {%endblock%}
 </body>
 
 </html>
